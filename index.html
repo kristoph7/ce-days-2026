@@ -1,0 +1,540 @@
+<title>CE Days 2026 Themes</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Vote for your CE Days 2026 party theme · ACES, Aklan State University">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Anton&family=Poppins:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: compact denim hero → numbered steps → responsive theme grid (1 pick) → ballot section (your pick + details) → footer. Mobile gets a slim sticky "continue" bar. */
+:root{
+  --ink:#08182f; --navy:#0d2547; --denim:#1d4f8f; --denim-2:#245ea6;
+  --stitch:#f2c35b; --thread:#cfe6ff; --brass:#c08a2e; --sky:#4cc9ff;
+  --paper:#f3f7fd; --soft:#c3d5ec; --muted:#8fa9cb; --line:rgba(207,230,255,.14);
+  --ok:#6ee3a8; --err:#ff9585;
+  --display:"Bowlby One","Arial Black",Impact,sans-serif;
+  --poster:"Anton",Impact,"Arial Narrow",sans-serif;
+  --body:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r:16px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--body);font-size:15px;color:var(--paper);background:var(--ink);
+  background-image:
+    radial-gradient(900px 520px at 0% -5%, rgba(76,201,255,.16), transparent 60%),
+    radial-gradient(800px 600px at 100% 30%, rgba(36,94,166,.35), transparent 60%),
+    repeating-linear-gradient(135deg, rgba(255,255,255,.018) 0 2px, transparent 2px 6px);
+  background-attachment:fixed;}
+.wrap{width:100%;max-width:1160px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+img{display:block}
+:focus-visible{outline:3px solid var(--sky);outline-offset:3px}
+
+/* denim material */
+.denim{background-color:var(--denim);
+  background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.07) 0 1px,transparent 1px 4px),
+                   repeating-linear-gradient(-45deg,rgba(0,0,0,.17) 0 1px,transparent 1px 5px);}
+.rivet{position:absolute;width:12px;height:12px;border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#f6d48c,var(--brass) 55%,#6b4612);box-shadow:0 1px 2px rgba(0,0,0,.6)}
+
+/* top bar */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:16px}
+.tag{font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.tag b{color:var(--paper);font-weight:600}
+.maker{flex:none;font-size:11px;letter-spacing:.04em;padding:6px 12px;border-radius:999px;border:1px dashed var(--stitch);color:var(--stitch);background:rgba(8,24,47,.6);white-space:nowrap}
+.maker b{font-weight:700}
+
+/* hero: centered poster stack */
+.hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding-block:12px 44px}
+.seal{position:relative;width:clamp(96px,13vw,132px);aspect-ratio:1;margin-bottom:14px}
+.seal::before{content:"";position:absolute;inset:-18%;border-radius:50%;background:radial-gradient(circle,rgba(242,195,91,.28),transparent 65%);filter:blur(4px)}
+.seal img{position:relative;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 10px 18px rgba(0,0,0,.55))}
+.org{margin:0 0 26px;display:flex;flex-direction:column;gap:4px;align-items:center}
+.org strong{font-family:var(--body);font-weight:700;font-size:clamp(12px,1.6vw,15px);letter-spacing:.18em;text-transform:uppercase;color:var(--paper)}
+.org span{font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--stitch)}
+.org span::before,.org span::after{content:"";display:inline-block;width:26px;height:1px;background:currentColor;opacity:.5;vertical-align:middle;margin:0 10px}
+.title{position:relative;display:flex;flex-direction:column;align-items:center}
+.patch{position:relative;display:inline-block;padding:12px 30px 22px;border-radius:22px;box-shadow:0 18px 40px rgba(0,0,0,.45);transform:rotate(-1.5deg)}
+.patch::after{content:"";position:absolute;inset:8px;border:2px dashed var(--thread);border-radius:15px;opacity:.7;pointer-events:none}
+.patch h1{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(52px,10vw,120px);line-height:1;color:var(--paper);letter-spacing:.01em;text-shadow:0 3px 0 rgba(0,0,0,.22)}
+.yr{position:relative;display:block;margin-top:clamp(-34px,-3.4vw,-20px);font-family:var(--display);font-size:clamp(46px,8vw,96px);line-height:1;
+  background:linear-gradient(180deg,#c4efff,#2b95ff 70%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  -webkit-text-stroke:2.5px #0b5fc4;filter:drop-shadow(0 5px 0 #0a3d86) drop-shadow(0 12px 18px rgba(0,0,0,.4))}
+.lede{max-width:48ch;margin:22px auto 0;font-size:16px;line-height:1.7;color:var(--soft);text-wrap:balance}
+.lede strong{color:var(--stitch);font-weight:600}
+.steps{list-style:none;margin:34px 0 0;padding:0;width:100%;max-width:920px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  border-radius:18px;background:rgba(13,37,71,.55);border:1px solid var(--line);text-align:left;overflow:hidden}
+.steps li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;align-items:start;padding:18px 20px;position:relative}
+.steps li+li::before{content:"";position:absolute;left:0;top:16px;bottom:16px;border-left:2px dashed rgba(207,230,255,.18)}
+.steps i{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--stitch);color:var(--ink);font:400 17px var(--poster);font-style:normal}
+.steps b{display:block;font-weight:600;font-size:14.5px;margin-bottom:2px}
+.steps span{font-size:12.5px;color:var(--muted);line-height:1.5}
+
+/* countdown */
+.countdown{margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.cd-label{margin:0;font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.cd-label b{color:var(--stitch);font-weight:600}
+.cd-tiles{display:flex;gap:10px;align-items:flex-start}
+.cd-tile{position:relative;width:clamp(66px,9vw,84px);padding:10px 0 8px;border-radius:14px;text-align:center;box-shadow:0 10px 22px rgba(0,0,0,.4)}
+.cd-tile::after{content:"";position:absolute;inset:5px;border:1.5px dashed rgba(207,230,255,.55);border-radius:10px;pointer-events:none}
+.cd-tile b{display:block;font:400 clamp(28px,4vw,38px)/1.05 var(--poster);font-variant-numeric:tabular-nums;color:#fff}
+.cd-tile span{display:block;margin-top:2px;font-size:9.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--thread)}
+.cd-sep{font:400 28px/1 var(--poster);color:var(--stitch);padding-top:14px}
+.countdown.urgent .cd-tile b{color:#ffd27a}
+.countdown.ended .cd-tiles{display:none}
+
+/* closed + organizer */
+.closed{padding-block:8px 64px}
+.closed-card{position:relative;max-width:620px;margin:0 auto;padding:40px 28px 30px;border-radius:22px;text-align:center;box-shadow:0 20px 44px rgba(0,0,0,.45)}
+.closed-card::before{content:"";position:absolute;inset:8px;border:2px dashed rgba(242,195,91,.6);border-radius:16px;pointer-events:none}
+.lock{display:grid;place-items:center;width:64px;height:64px;margin:0 auto 14px;border-radius:50%;background:rgba(8,24,47,.6);color:var(--stitch)}
+.lock svg{width:30px;height:30px}
+.closed-card h2{margin:0 0 8px;font:400 clamp(30px,5vw,42px)/1.05 var(--poster);text-transform:uppercase;letter-spacing:.02em}
+.closed-card p{margin:0 auto;max-width:42ch;color:var(--soft);line-height:1.65}
+.org-access{margin-top:24px;padding-top:18px;border-top:1px dashed rgba(207,230,255,.25)}
+.org-access summary{cursor:pointer;font-size:13px;color:var(--thread);list-style:none;display:inline-flex;gap:6px;align-items:center}
+.org-access summary::-webkit-details-marker{display:none}
+.org-form{display:flex;gap:8px;max-width:380px;margin:14px auto 0}
+.org-form input{flex:1;min-width:0}
+.org-form .btn{flex:none;height:48px}
+.org-msg{margin:8px 0 0;min-height:1.2em;font-size:13px;color:var(--err)}
+input[type=password]{width:100%;height:48px;border-radius:12px;border:1.5px solid rgba(207,230,255,.3);background:rgba(8,24,47,.6);color:#fff;font:500 16px var(--body);padding:0 14px;outline:none}
+input[type=password]:focus{border-color:var(--stitch);box-shadow:0 0 0 3px rgba(242,195,91,.22)}
+.admin-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 14px;margin:0 auto 24px;padding:12px 16px;max-width:920px;border-radius:14px;
+  background:rgba(242,195,91,.12);border:1px dashed var(--stitch);color:var(--stitch);font-size:13px;font-weight:500;text-align:center}
+.admin-bar button{background:none;border:0;color:var(--thread);text-decoration:underline;font:500 13px var(--body);cursor:pointer}
+
+/* section heads */
+.head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:8px 16px;margin-bottom:18px}
+.eyebrow{margin:0 0 4px;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--stitch)}
+.head h2{margin:0;font:400 clamp(28px,4vw,40px)/1.05 var(--poster);text-transform:uppercase;letter-spacing:.02em;text-wrap:balance}
+.head p{margin:0;font-size:13px;color:var(--muted)}
+
+/* theme grid */
+.themes{padding-block:12px 48px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.card{position:relative;display:flex;flex-direction:column;border-radius:var(--r);overflow:hidden;background:var(--navy);
+  border:1px solid var(--line);cursor:pointer;transition:transform .2s ease,box-shadow .2s ease,border-color .2s}
+.card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(0,0,0,.45)}
+.card input{position:absolute;opacity:0;pointer-events:none}
+.card:has(input:focus-visible){outline:3px solid var(--sky);outline-offset:3px}
+.card.on{border-color:var(--stitch);box-shadow:0 0 0 2px var(--stitch),0 14px 30px rgba(0,0,0,.45)}
+.thumb{position:relative;aspect-ratio:5/4;max-width:100%;background:#102a4d;overflow:hidden}
+.thumb img{width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
+.card:hover .thumb img{transform:scale(1.04)}
+.peek{position:absolute;right:10px;bottom:10px;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;border:0;cursor:zoom-in;
+  background:rgba(8,24,47,.78);color:#fff;backdrop-filter:blur(4px)}
+.peek svg{width:17px;height:17px}
+.check{position:absolute;top:10px;left:10px;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;
+  border:2px solid rgba(255,255,255,.85);background:rgba(8,24,47,.55);transition:.2s}
+.check svg{width:15px;height:15px;opacity:0;transition:.2s}
+.card.on .check{background:var(--stitch);border-color:var(--stitch)}
+.card.on .check svg{opacity:1}
+.meta{position:relative;flex:1;display:flex;flex-direction:column;gap:4px;padding:14px 14px 15px}
+.meta::before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--tone)}
+.meta h3{margin:4px 0 0;font:400 22px/1.08 var(--poster);letter-spacing:.02em;text-transform:uppercase}
+.meta p{margin:0;font-size:12.5px;line-height:1.5;color:var(--muted)}
+
+/* ballot */
+.ballot{padding-block:8px 56px;scroll-margin-top:16px}
+.panel{position:relative;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:28px;padding:28px;border-radius:22px;box-shadow:0 20px 44px rgba(0,0,0,.45)}
+.panel::before{content:"";position:absolute;inset:8px;border:2px dashed rgba(242,195,91,.6);border-radius:16px;pointer-events:none}
+.pick{position:relative;display:flex;flex-direction:column;border-radius:var(--r);overflow:hidden;background:rgba(8,24,47,.55);min-height:100%}
+.pick .ph{aspect-ratio:1/1;max-width:100%;display:grid;place-items:center;text-align:center;padding:24px;color:var(--thread);font-size:14px;line-height:1.6;
+  border:2px dashed rgba(207,230,255,.35);border-radius:var(--r);margin:14px}
+.pick .ph svg{width:40px;height:40px;margin:0 auto 10px;opacity:.7}
+.pick img{width:100%;aspect-ratio:1/1;object-fit:cover}
+.pick .cap{padding:12px 16px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.pick .cap small{display:block;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--stitch);font-weight:600}
+.pick .cap strong{font:400 24px/1.1 var(--poster);text-transform:uppercase;letter-spacing:.02em}
+.linkbtn{background:none;border:0;color:var(--thread);font:500 13px var(--body);text-decoration:underline;cursor:pointer;padding:6px}
+form{display:flex;flex-direction:column;gap:18px;position:relative}
+form h2{margin:0;font:400 clamp(26px,3.4vw,34px)/1.1 var(--poster);text-transform:uppercase;letter-spacing:.02em}
+form .sub{margin:-10px 0 0;color:var(--soft);font-size:13.5px;line-height:1.6}
+.field{display:flex;flex-direction:column;gap:7px;min-width:0}
+.lbl{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--thread)}
+input[type=text]{width:100%;height:48px;border-radius:12px;border:1.5px solid rgba(207,230,255,.3);background:rgba(8,24,47,.6);
+  color:#fff;font:500 16px var(--body);padding:0 14px;outline:none;transition:.15s}
+input[type=text]:focus{border-color:var(--stitch);box-shadow:0 0 0 3px rgba(242,195,91,.22)}
+input::placeholder{color:#7f9bc1}
+.yrs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.yrs input{position:absolute;opacity:0;pointer-events:none}
+.yrs label{display:grid;place-items:center;height:48px;border-radius:12px;cursor:pointer;font:600 14px var(--body);
+  border:1.5px solid rgba(207,230,255,.3);background:rgba(8,24,47,.6);color:var(--soft);transition:.15s}
+.yrs input:checked+label{background:var(--stitch);border-color:var(--stitch);color:var(--ink)}
+.yrs input:focus-visible+label{outline:3px solid var(--sky);outline-offset:2px}
+.submit{height:52px;border:0;border-radius:14px;cursor:pointer;font:700 16px var(--body);letter-spacing:.02em;margin-top:4px;
+  background:linear-gradient(180deg,#9ee3ff,#1f8bff);color:#04224a;box-shadow:0 4px 0 #0a3d86;transition:transform .1s}
+.submit:active{transform:translateY(3px);box-shadow:0 1px 0 #0a3d86}
+.submit:disabled{opacity:.6;cursor:not-allowed}
+.msg{margin:0;min-height:1.2em;font-size:13px;color:var(--err)}
+
+/* mobile continue bar */
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:none;
+  padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  background:rgba(8,24,47,.94);backdrop-filter:blur(10px);border-top:1px solid var(--line)}
+.bar-in{display:flex;align-items:center;gap:12px;max-width:640px;margin:0 auto}
+.bar img{width:44px;height:44px;border-radius:10px;object-fit:cover;flex:none}
+.bar div{flex:1;min-width:0}
+.bar small{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--stitch);font-weight:600}
+.bar strong{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar a{flex:none;height:42px;display:grid;place-items:center;padding:0 18px;border-radius:12px;background:var(--stitch);color:var(--ink);font-weight:700;text-decoration:none;font-size:14px}
+.bar.show{display:block}
+
+/* overlays */
+.overlay{position:fixed;inset:0;z-index:60;display:grid;place-items:center;background:rgba(4,12,26,.88);backdrop-filter:blur(6px);
+  padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.lb{display:flex;flex-direction:column;align-items:center;gap:14px;width:min(640px,100%)}
+.lb img{width:100%;max-height:78vh;object-fit:contain;border-radius:14px;box-shadow:0 30px 60px rgba(0,0,0,.6)}
+.acts{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.btn{height:44px;padding:0 20px;border-radius:12px;border:1.5px solid rgba(207,230,255,.35);background:rgba(13,37,71,.85);color:#fff;font:600 14px var(--body);cursor:pointer}
+.btn.primary{background:var(--stitch);border-color:var(--stitch);color:var(--ink)}
+.ticket{position:relative;width:min(420px,100%);padding:34px 26px 28px;border-radius:22px;text-align:center;box-shadow:0 30px 60px rgba(0,0,0,.6)}
+.ticket::before{content:"";position:absolute;inset:9px;border:2px dashed var(--thread);border-radius:15px;opacity:.65;pointer-events:none}
+.ticket img{width:150px;height:150px;object-fit:cover;border-radius:14px;margin:14px auto;box-shadow:0 10px 24px rgba(0,0,0,.4)}
+.ticket h2{margin:6px 0 0;font:400 30px/1.1 var(--display)}
+.ticket .t{font:400 26px/1.1 var(--poster);text-transform:uppercase;margin:0 0 6px}
+.ticket p{margin:0 0 6px;color:var(--soft);font-size:14px;line-height:1.6}
+.ticket .note{font-size:12px;color:var(--thread);opacity:.85;margin:10px 0 18px}
+
+footer{border-top:1px solid var(--line)}
+footer .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 20px;padding-block:20px 28px;font-size:12.5px;color:var(--muted)}
+footer b{color:var(--paper);font-weight:600}
+
+/* ---------- responsive ---------- */
+@media (max-width:1024px){              /* tablets */
+  .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .hero{gap:32px}
+}
+@media (max-width:820px){
+  .steps li{grid-template-columns:1fr;gap:10px;padding:16px}
+  .panel{grid-template-columns:1fr;padding:22px}
+  .pick{flex-direction:row;align-items:center;min-height:0}
+  .pick img{width:120px;flex:none;border-radius:12px;margin:12px}
+  .pick .ph{aspect-ratio:auto;flex:1;padding:20px}
+  .pick .cap{flex:1;flex-direction:column;align-items:flex-start;padding:12px 12px 12px 0}
+}
+@media (max-width:600px){               /* phones */
+  body{font-size:14px}
+  .wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .tag span{display:none}
+  .org span::before,.org span::after{width:14px;margin:0 6px}
+  .patch{padding:10px 20px 18px}
+  .steps{grid-template-columns:1fr}
+  .steps li{grid-template-columns:32px minmax(0,1fr);align-items:center;padding:13px 16px}
+  .steps li+li::before{left:16px;right:16px;top:0;bottom:auto;border-left:0;border-top:2px dashed rgba(207,230,255,.18)}
+  .steps i{width:32px;height:32px;font-size:16px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .meta{padding:11px 11px 12px}
+  .meta h3{font-size:17px}
+  .meta p{display:none}
+  .check{width:24px;height:24px}
+  .peek{width:30px;height:30px}
+  .panel{padding:18px;border-radius:18px}
+  .pick img{width:88px;margin:10px}
+  .pick .cap strong{font-size:20px}
+  .yrs label{height:46px}
+  body.has-pick{padding-bottom:76px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+<header class="wrap topbar">
+  <div class="tag"><b>ACES</b><span> · Theme Voting</span></div>
+  <div class="maker">Made by: <b>Baby ni Gov</b></div>
+</header>
+
+<section class="wrap hero">
+  <div class="seal"><img src="img/logo.png" alt="Association of Civil Engineering Students seal"></div>
+  <p class="org">
+    <strong>The Association of Civil Engineering Students</strong>
+    <span>Aklan State University · Kalibo, Aklan</span>
+  </p>
+  <div class="title">
+    <div class="patch denim">
+      <i class="rivet" style="top:-4px;left:-4px"></i><i class="rivet" style="top:-4px;right:-4px"></i>
+      <i class="rivet" style="bottom:-4px;left:-4px"></i><i class="rivet" style="bottom:-4px;right:-4px"></i>
+      <h1>CE DAYS</h1>
+    </div>
+    <span class="yr">2026</span>
+  </div>
+  <p class="lede">Eleven looks are on the board. Vote for <strong>the one theme</strong> you want to dress up for, and the most-voted theme sets the dress code.</p>
+  <div class="countdown" id="countdown" role="timer" aria-live="off">
+    <p class="cd-label" id="cd-label">Voting closes <b>Sun, Nov 8 · 11:59 PM</b></p>
+    <div class="cd-tiles">
+      <div class="cd-tile denim"><b id="cd-d">00</b><span>Days</span></div>
+      <div class="cd-tile denim"><b id="cd-h">00</b><span>Hours</span></div>
+      <div class="cd-tile denim"><b id="cd-m">00</b><span>Mins</span></div>
+      <div class="cd-tile denim"><b id="cd-s">00</b><span>Secs</span></div>
+    </div>
+  </div>
+  <ol class="steps" id="steps">
+    <li><i>1</i><div><b>Browse the boards</b><span>Tap the magnifier to see each full outfit board.</span></div></li>
+    <li><i>2</i><div><b>Pick one theme</b><span>Tap a card to select it. Tap another to switch.</span></div></li>
+    <li><i>3</i><div><b>Submit your vote</b><span>Add your name, year and section. One vote per student.</span></div></li>
+  </ol>
+</section>
+
+<main>
+  <section class="wrap closed" id="closed" hidden>
+    <div class="closed-card denim">
+      <div class="lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg></div>
+      <h2>Voting is closed</h2>
+      <p>Thanks for voting, CE students! The ballot closed on Sunday, November 8 at 11:59 PM. ACES will announce the winning theme soon.</p>
+      <details class="org-access" id="org-access">
+        <summary>Organizer access</summary>
+        <form class="org-form" id="org-form" novalidate>
+          <label class="lbl" for="pass" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Organizer passcode</label>
+          <input type="password" id="pass" placeholder="Organizer passcode" autocomplete="current-password">
+          <button class="btn primary" type="submit">Unlock</button>
+        </form>
+        <p class="org-msg" id="org-msg" role="status" aria-live="polite"></p>
+      </details>
+    </div>
+  </section>
+
+  <div id="open">
+  <div class="wrap"><div class="admin-bar" id="admin-bar" hidden>Organizer view · voting is closed for students, so new votes are not accepted. <button type="button" id="lock-again">Lock again</button></div></div>
+  <section class="wrap themes" aria-labelledby="themes-h">
+    <div class="head">
+      <div><p class="eyebrow">Inspiration Themes</p><h2 id="themes-h">Choose your look</h2></div>
+      <p id="status">No theme selected yet</p>
+    </div>
+    <div class="grid" id="grid" role="radiogroup" aria-labelledby="themes-h"></div>
+  </section>
+
+  <section class="wrap ballot" id="ballot" aria-labelledby="ballot-h">
+    <div class="panel denim">
+      <div class="pick" id="pick"></div>
+      <form id="form" novalidate>
+        <div>
+          <p class="eyebrow">Your ballot</p>
+          <h2 id="ballot-h">Cast your vote</h2>
+        </div>
+        <p class="sub">Use your real name so the council can count one vote per student.</p>
+        <div class="field">
+          <label class="lbl" for="name">Full name</label>
+          <input type="text" id="name" name="name" placeholder="e.g. Juan Dela Cruz" autocomplete="name" maxlength="80">
+        </div>
+        <div class="field">
+          <span class="lbl" id="yr-lbl">Year level</span>
+          <div class="yrs" role="radiogroup" aria-labelledby="yr-lbl">
+            <input type="radio" name="year" id="y1" value="1st Year"><label for="y1">1st</label>
+            <input type="radio" name="year" id="y2" value="2nd Year"><label for="y2">2nd</label>
+            <input type="radio" name="year" id="y3" value="3rd Year"><label for="y3">3rd</label>
+            <input type="radio" name="year" id="y4" value="4th Year"><label for="y4">4th</label>
+          </div>
+        </div>
+        <div class="field">
+          <label class="lbl" for="section">Section</label>
+          <input type="text" id="section" name="section" placeholder="e.g. BSCE 2-A" maxlength="30">
+        </div>
+        <button class="submit" id="submit" type="submit">Submit my vote</button>
+        <p class="msg" id="msg" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><b>ACES</b> · The Association of Civil Engineering Students</span>
+    <span>asucit.aces2@gmail.com</span>
+  </div>
+</footer>
+
+<div class="bar" id="bar">
+  <div class="bar-in">
+    <img id="bar-img" alt="">
+    <div><small>Your pick</small><strong id="bar-name"></strong></div>
+    <a href="#ballot">Continue</a>
+  </div>
+</div>
+
+<div class="overlay" id="lb" hidden>
+  <div class="lb">
+    <img id="lb-img" alt="">
+    <div class="acts">
+      <button class="btn primary" id="lb-pick" type="button">Choose this theme</button>
+      <button class="btn" id="lb-close" type="button">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="done" hidden>
+  <div class="ticket denim">
+    <i class="rivet" style="top:16px;left:16px"></i><i class="rivet" style="top:16px;right:16px"></i>
+    <h2>Vote received!</h2>
+    <img id="done-img" alt="">
+    <p class="t" id="done-theme"></p>
+    <p id="done-who"></p>
+    <p class="note" id="done-note"></p>
+    <button class="btn primary" id="done-close" type="button">Done</button>
+  </div>
+</div>
+
+<script>
+// Google Apps Script Web App URL. Leave empty for preview mode (nothing is sent).
+const SHEETS_URL = "https://script.google.com/macros/s/AKfycbyMZ9VAL2lXju1hydN90yeEz41dUwPwy3BkW66VPOoenP6GkopMEI-yRyRe6M7EcWFzkw/exec";
+
+const THEMES = [
+  {id:"minecraft",          name:"Minecraft",                 vibe:"Creeper greens, Enderman blacks and baggy denim.",      tone:"#5bbf3f"},
+  {id:"streetwear",         name:"Street Wear",               vibe:"Jerseys, wide-leg washes, sneakers and chains.",        tone:"#d0313a"},
+  {id:"halloween",          name:"Halloween",                 vibe:"Masks, all-black fits and pumpkin pails.",              tone:"#f07a22"},
+  {id:"wrong-party",        name:"Wrong Party Attended",      vibe:"Dressed for a wedding, beach, sleepover or game.",      tone:"#f2b632"},
+  {id:"after-dark",         name:"After Dark",                vibe:"Leather, slip dresses and late-night silver.",          tone:"#a9adb6"},
+  {id:"historic",           name:"Historic",                  vibe:"Barong, Filipiniana sleeves and gold accents.",         tone:"#c79422"},
+  {id:"celestial-midnight", name:"Celestial Midnight Soiree", vibe:"Star-dusted navy gowns and masquerade masks.",          tone:"#7fb6ff"},
+  {id:"god-goddess",        name:"God & Goddess",             vibe:"Draped whites, sunburst crowns and gold.",              tone:"#f3a6d8"},
+  {id:"celestial-seas",     name:"Celestial Seas",            vibe:"Ocean blues, satin, moons and sequin tides.",           tone:"#5b62ff"},
+  {id:"barrio-festival",    name:"Barrio Festival",           vibe:"Patadyong plaids, camisa de chino, fiesta brights.",    tone:"#c26cf0"},
+  {id:"glitz-glam",         name:"Glitz & Glam",              vibe:"Sequins, metallics, mesh and mirror-ball sparkle.",     tone:"#ffb53d"}
+];
+let picked = null, lbTheme = null, ballotVisible = false;
+const $ = s => document.querySelector(s);
+const byId = id => THEMES.find(t => t.id === id);
+const check = '<svg viewBox="0 0 24 24" fill="none" stroke="#08182f" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+const zoom = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4M11 8v6M8 11h6"/></svg>';
+
+$("#grid").innerHTML = THEMES.map(t => `
+  <label class="card" data-id="${t.id}" style="--tone:${t.tone}">
+    <input type="radio" name="theme" value="${t.id}">
+    <div class="thumb">
+      <img src="img/${t.id}-thumb.jpg" alt="" loading="lazy">
+      <span class="check">${check}</span>
+      <button class="peek" type="button" data-peek="${t.id}" aria-label="View the full ${t.name} board">${zoom}</button>
+    </div>
+    <div class="meta"><h3>${t.name}</h3><p>${t.vibe}</p></div>
+  </label>`).join("");
+
+function update(){
+  document.querySelectorAll(".card").forEach(c => {
+    const on = c.dataset.id === picked;
+    c.classList.toggle("on", on); c.querySelector("input").checked = on;
+  });
+  const t = byId(picked);
+  $("#status").textContent = t ? `Selected: ${t.name}` : "No theme selected yet";
+  $("#pick").innerHTML = t
+    ? `<img src="img/${t.id}.jpg" alt="${t.name} outfit board"><div class="cap"><div><small>Your pick</small><strong>${t.name}</strong></div><button type="button" class="linkbtn" id="change">Change</button></div>`
+    : `<div class="ph"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Pick a theme above and it will show up here.</div></div>`;
+  const ch = $("#change"); if(ch) ch.onclick = () => document.getElementById("themes-h").scrollIntoView({behavior:"smooth"});
+  document.body.classList.toggle("has-pick", !!t);
+  if(t){ $("#bar-img").src = `img/${t.id}-thumb.jpg`; $("#bar-name").textContent = t.name; }
+  syncBar();
+}
+function syncBar(){ $("#bar").classList.toggle("show", !!picked && !ballotVisible && matchMedia("(max-width:600px)").matches); }
+function choose(id){ picked = id; say(""); update(); }
+
+$("#grid").addEventListener("click", e => {
+  const p = e.target.closest("[data-peek]");
+  if(p){ e.preventDefault(); openLb(p.dataset.peek); }
+});
+$("#grid").addEventListener("change", e => { if(e.target.name === "theme") choose(e.target.value); });
+
+function openLb(id){
+  lbTheme = byId(id);
+  $("#lb-img").src = `img/${id}.jpg`; $("#lb-img").alt = `${lbTheme.name} full outfit board`;
+  $("#lb-pick").textContent = picked === id ? "Selected ✓" : "Choose this theme";
+  $("#lb").hidden = false; $("#lb-pick").focus();
+}
+const closeLb = () => { $("#lb").hidden = true; };
+$("#lb-close").onclick = closeLb;
+$("#lb").addEventListener("click", e => { if(e.target.id === "lb") closeLb(); });
+$("#lb-pick").onclick = () => { choose(lbTheme.id); closeLb(); };
+$("#done-close").onclick = () => { $("#done").hidden = true; };
+document.addEventListener("keydown", e => { if(e.key === "Escape"){ closeLb(); $("#done").hidden = true; } });
+
+try{
+  new IntersectionObserver(es => { ballotVisible = es[0].isIntersecting; syncBar(); }, {threshold:.15}).observe($("#ballot"));
+}catch(_){}
+addEventListener("resize", syncBar);
+
+function say(m){ $("#msg").textContent = m; }
+
+$("#form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const name = $("#name").value.trim();
+  const year = (document.querySelector('input[name=year]:checked') || {}).value;
+  const section = $("#section").value.trim();
+  if(isClosed()){ say("Voting closed on Nov 8 at 11:59 PM. New votes are no longer accepted."); return; }
+  if(!picked){ say("Choose a theme first."); document.getElementById("themes-h").scrollIntoView({behavior:"smooth"}); return; }
+  if(!name){ say("Enter your full name."); $("#name").focus(); return; }
+  if(!year){ say("Choose your year level."); return; }
+  if(!section){ say("Enter your section."); $("#section").focus(); return; }
+
+  const t = byId(picked);
+  const payload = { name, year, section, theme:t.name, submittedAt:new Date().toISOString() };
+  const btn = $("#submit"); btn.disabled = true; btn.textContent = "Sending…"; say("");
+
+  let note = "Preview mode: this vote was not saved. Votes go to Google Sheets once the site is live.";
+  if(SHEETS_URL){
+    try{
+      await fetch(SHEETS_URL, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(payload)});
+      note = "Your vote is saved. Thanks for voting!";
+    }catch(_){
+      btn.disabled = false; btn.textContent = "Submit my vote";
+      say("Couldn't send your vote. Check your connection and try again."); return;
+    }
+  } else { await new Promise(r => setTimeout(r, 450)); }
+
+  $("#done-img").src = `img/${t.id}-thumb.jpg`; $("#done-img").alt = t.name;
+  $("#done-theme").textContent = t.name;
+  $("#done-who").textContent = `${name} · ${year} · ${section}`;
+  $("#done-note").textContent = note;
+  $("#done").hidden = false; $("#done-close").focus();
+  btn.disabled = false; btn.textContent = "Submit my vote";
+  e.target.reset(); picked = null; update();
+});
+
+update();
+
+/* ---------- deadline, countdown, organizer access ---------- */
+const DEADLINE = new Date("2026-11-08T23:59:59+08:00").getTime();   // Sun, Nov 8, 11:59 PM (Philippine time)
+const ORG_HASH = "d026f1dcc6ac918f240cff13c82f76ee95a2bd93cfd0e5f11bf8149d996944f8";
+const forceClosed = location.hash === "#closed";                    // preview the closed screen
+const isClosed = () => forceClosed || Date.now() >= DEADLINE;
+const store = { get(k){ try{ return localStorage.getItem(k); }catch(_){ return null; } }, set(k,v){ try{ v===null ? localStorage.removeItem(k) : localStorage.setItem(k,v); }catch(_){} } };
+let organizer = store.get("ceDaysOrganizer") === ORG_HASH;
+const pad = n => String(n).padStart(2, "0");
+
+function tick(){
+  const closed = isClosed();
+  const cd = $("#countdown");
+  if(closed){
+    cd.classList.add("ended");
+    $("#cd-label").innerHTML = "Voting closed <b>Sun, Nov 8 · 11:59 PM</b>";
+  } else {
+    let s = Math.max(0, Math.floor((DEADLINE - Date.now()) / 1000));
+    const d = Math.floor(s / 86400); s -= d * 86400;
+    const h = Math.floor(s / 3600);  s -= h * 3600;
+    const m = Math.floor(s / 60);    s -= m * 60;
+    $("#cd-d").textContent = pad(d); $("#cd-h").textContent = pad(h);
+    $("#cd-m").textContent = pad(m); $("#cd-s").textContent = pad(s);
+    cd.classList.toggle("urgent", DEADLINE - Date.now() < 3600e3);
+  }
+  const showSite = !closed || organizer;
+  $("#open").hidden = !showSite;
+  $("#closed").hidden = showSite;
+  $("#steps").hidden = closed;
+  $("#admin-bar").hidden = !(closed && organizer);
+  const btn = $("#submit");
+  if(closed){ btn.disabled = true; btn.textContent = "Voting closed"; }
+  if(!showSite){ $("#bar").classList.remove("show"); }
+}
+tick(); setInterval(tick, 1000);
+
+async function sha256(t){
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+}
+$("#org-form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const v = $("#pass").value.trim();
+  if(!v){ $("#org-msg").textContent = "Enter the organizer passcode."; return; }
+  let ok = false;
+  try{ ok = (await sha256(v)) === ORG_HASH; }catch(_){}
+  if(!ok){ $("#org-msg").textContent = "That passcode is incorrect."; $("#pass").select(); return; }
+  organizer = true; store.set("ceDaysOrganizer", ORG_HASH);
+  $("#pass").value = ""; $("#org-msg").textContent = ""; tick(); scrollTo({top:0});
+});
+$("#lock-again").onclick = () => { organizer = false; store.set("ceDaysOrganizer", null); $("#org-access").open = false; tick(); };
+</script>
