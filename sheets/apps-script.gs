@@ -21,6 +21,11 @@ const VOTES = 'Votes', RESULTS = 'Results', FINAL = 'Final Ranking';
 
 /* ---------------- receiving votes from the website ---------------- */
 function doPost(e) {
+  // the website asks "is this student still on the Votes list?" so a deleted row unlocks them
+  try {
+    const q = JSON.parse(e.postData.contents);
+    if (q.action === 'check') return json_({ ok: true, voted: hasVoted_(q.name, q.section) });
+  } catch (_) {}
   if (new Date() > DEADLINE) return json_({ ok: false, error: 'Voting is closed.' });
   const lock = LockService.getScriptLock();
   lock.waitLock(10000);
@@ -30,13 +35,8 @@ function doPost(e) {
     if (THEMES.indexOf(theme) === -1) return json_({ ok: false, error: 'Unknown theme.' });
     const sheet = votesSheet_();
     // one vote per student: same name + section (ignoring case, spaces and dashes) is rejected
-    const key = norm_(d.name) + '|' + norm_(d.section);
-    const last = sheet.getLastRow();
-    if (last > 1) {
-      const rows = sheet.getRange(2, 2, last - 1, 3).getValues(); // Name, Year, Section
-      if (rows.some(r => norm_(r[0]) + '|' + norm_(r[2]) === key)) {
-        return json_({ ok: false, duplicate: true, error: 'Already voted.' });
-      }
+    if (hasVoted_(d.name, d.section)) {
+      return json_({ ok: false, duplicate: true, error: 'Already voted.' });
     }
     sheet.appendRow([
       new Date(),
@@ -166,6 +166,14 @@ function votesSheet_() {
 }
 function clean_(v, max) {
   return String(v || '').replace(/^[=+\-@]/, "'$&").slice(0, max); // stops formula injection
+}
+function hasVoted_(name, section) {
+  const sheet = votesSheet_();
+  const last = sheet.getLastRow();
+  if (last < 2) return false;
+  const key = norm_(name) + '|' + norm_(section);
+  const rows = sheet.getRange(2, 2, last - 1, 3).getValues(); // Name, Year, Section
+  return rows.some(r => norm_(r[0]) + '|' + norm_(r[2]) === key);
 }
 function norm_(v) {
   return String(v || '').replace(/^'/, '').toLowerCase().replace(/[\s\-_.]+/g, '');

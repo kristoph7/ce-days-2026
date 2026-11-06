@@ -607,6 +607,27 @@ function tick(){
 }
 tick(); setInterval(tick, 1000);
 
+/* re-check a saved vote against the sheet: if the row was deleted, unlock this device */
+let checking = false;
+async function recheckVote(){
+  if(checking || !SHEETS_URL) return;
+  let vote = null; try{ vote = JSON.parse(store.get("ceDaysVote") || "null"); }catch(_){}
+  if(!vote || !vote.name || !vote.section) return;
+  checking = true;
+  try{
+    const r = await fetch(SHEETS_URL, { method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body: JSON.stringify({ action:"check", name:vote.name, section:vote.section }) });
+    const res = await r.json();
+    if(res && res.ok === true && res.voted === false){
+      store.set("ceDaysVote", null);
+      tick();
+    }
+  }catch(_){ /* offline or blocked: keep the lock */ }
+  checking = false;
+}
+recheckVote();
+document.addEventListener("visibilitychange", () => { if(document.visibilityState === "visible") recheckVote(); });
+
 async function sha256(t){
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t));
   return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
