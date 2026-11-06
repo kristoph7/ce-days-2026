@@ -529,6 +529,7 @@ $("#form").addEventListener("submit", async e => {
       say("Couldn't send your vote. Check your connection and try again."); return;
     }
     if(res.duplicate){
+      endOrganizer();
       btn.disabled = false; btn.textContent = "Submit my vote";
       store.set("ceDaysVote", JSON.stringify({ duplicate:true, name, year, section }));
       tick(); showLockCard(); return;
@@ -540,6 +541,7 @@ $("#form").addEventListener("submit", async e => {
     note = "Your vote is saved. Thanks for voting!";
   } else { await new Promise(r => setTimeout(r, 450)); }
   if(SHEETS_URL) store.set("ceDaysVote", JSON.stringify({ id:t.id, theme:t.name, name, year, section, at:Date.now() }));
+  endOrganizer();
 
   $("#done-img").src = `img/${t.id}-thumb.jpg`; $("#done-img").alt = t.name;
   $("#done-theme").textContent = t.name;
@@ -645,7 +647,13 @@ $("#org-form").addEventListener("submit", async e => {
   organizer = true; sess.set("ceDaysOrganizer", ORG_HASH);
   $("#pass").value = ""; $("#org-msg").textContent = ""; tick(); scrollTo({top:0});
 });
-$("#lock-again").onclick = () => { organizer = false; sess.set("ceDaysOrganizer", null); $("#org-access").open = false; tick(); };
+$("#lock-again").onclick = () => { endOrganizer(); tick(); };
+/* any vote attempt (saved or rejected as a repeat) ends organizer mode, so the passcode is needed again */
+function endOrganizer(){
+  if(!organizer) return;
+  organizer = false; sess.set("ceDaysOrganizer", null);
+  $("#org-access").open = false; $("#pass").value = ""; $("#org-msg").textContent = "";
+}
 </script>
 
 </body>
