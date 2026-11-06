@@ -245,7 +245,7 @@ footer b{color:var(--paper);font-weight:600}
   body{font-size:14px}
   .wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
   .tag span{display:none}
-  .org span::before,.org span::after{width:14px;margin:0 6px}
+  .org span::before,.org span::after{display:none}
   .patch{padding:10px 20px 18px}
   .steps{grid-template-columns:1fr}
   .steps li{grid-template-columns:32px minmax(0,1fr);align-items:center;padding:13px 16px}
@@ -474,7 +474,8 @@ const closeLb = () => { $("#lb").hidden = true; };
 $("#lb-close").onclick = closeLb;
 $("#lb").addEventListener("click", e => { if(e.target.id === "lb") closeLb(); });
 $("#lb-pick").onclick = () => { choose(lbTheme.id); closeLb(); };
-$("#done-close").onclick = () => { $("#done").hidden = true; tick(); scrollTo({top:0}); };
+$("#done-close").onclick = () => { $("#done").hidden = true; tick(); showLockCard(); };
+function showLockCard(){ const c = $("#closed"); if(!c.hidden) c.scrollIntoView({behavior:"smooth", block:"center"}); else scrollTo({top:0}); }
 document.addEventListener("keydown", e => { if(e.key === "Escape"){ closeLb(); $("#done").hidden = true; } });
 
 try{
@@ -530,7 +531,7 @@ $("#form").addEventListener("submit", async e => {
     if(res.duplicate){
       btn.disabled = false; btn.textContent = "Submit my vote";
       store.set("ceDaysVote", JSON.stringify({ duplicate:true, name, year, section }));
-      tick(); scrollTo({top:0}); return;
+      tick(); showLockCard(); return;
     }
     if(!res.ok){
       btn.disabled = false; btn.textContent = "Submit my vote";
@@ -557,7 +558,9 @@ const ORG_HASH = "d026f1dcc6ac918f240cff13c82f76ee95a2bd93cfd0e5f11bf8149d996944
 const forceClosed = location.hash === "#closed";                    // preview the closed screen
 const isClosed = () => forceClosed || Date.now() >= DEADLINE;
 const store = { get(k){ try{ return localStorage.getItem(k); }catch(_){ return null; } }, set(k,v){ try{ v===null ? localStorage.removeItem(k) : localStorage.setItem(k,v); }catch(_){} } };
-let organizer = store.get("ceDaysOrganizer") === ORG_HASH;
+const sess = { get(k){ try{ return sessionStorage.getItem(k); }catch(_){ return null; } }, set(k,v){ try{ v===null ? sessionStorage.removeItem(k) : sessionStorage.setItem(k,v); }catch(_){} } };
+store.set("ceDaysOrganizer", null);                       // old builds kept organizer mode forever on the device
+let organizer = sess.get("ceDaysOrganizer") === ORG_HASH; // now it ends when the tab is closed
 const pad = n => String(n).padStart(2, "0");
 
 function tick(){
@@ -639,10 +642,10 @@ $("#org-form").addEventListener("submit", async e => {
   let ok = false;
   try{ ok = (await sha256(v)) === ORG_HASH; }catch(_){}
   if(!ok){ $("#org-msg").textContent = "That passcode is incorrect."; $("#pass").select(); return; }
-  organizer = true; store.set("ceDaysOrganizer", ORG_HASH);
+  organizer = true; sess.set("ceDaysOrganizer", ORG_HASH);
   $("#pass").value = ""; $("#org-msg").textContent = ""; tick(); scrollTo({top:0});
 });
-$("#lock-again").onclick = () => { organizer = false; store.set("ceDaysOrganizer", null); $("#org-access").open = false; tick(); };
+$("#lock-again").onclick = () => { organizer = false; sess.set("ceDaysOrganizer", null); $("#org-access").open = false; tick(); };
 </script>
 
 </body>
