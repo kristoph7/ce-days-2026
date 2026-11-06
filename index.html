@@ -122,6 +122,15 @@ input[type=password]:focus{border-color:var(--stitch);box-shadow:0 0 0 3px rgba(
 .voted-pick span{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
 .lock.ok{color:var(--ok)}
 
+.secs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;min-height:48px}
+.secs input{position:absolute;opacity:0;pointer-events:none}
+.secs label{display:grid;place-items:center;height:48px;border-radius:12px;cursor:pointer;font:600 14px var(--body);white-space:nowrap;
+  border:1.5px solid rgba(207,230,255,.3);background:rgba(8,24,47,.6);color:var(--soft);transition:.15s}
+.secs input:checked+label{background:var(--stitch);border-color:var(--stitch);color:var(--ink)}
+.secs input:focus-visible+label{outline:3px solid var(--sky);outline-offset:2px}
+.sec-hint{grid-column:1/-1;margin:0;display:flex;align-items:center;justify-content:center;height:48px;border-radius:12px;
+  border:1.5px dashed rgba(207,230,255,.3);color:var(--muted);font-size:13px}
+
 /* section heads */
 .head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:8px 16px;margin-bottom:18px}
 .eyebrow{margin:0 0 4px;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--stitch)}
@@ -291,7 +300,7 @@ footer b{color:var(--paper);font-weight:600}
   <ol class="steps" id="steps">
     <li><i>1</i><div><b>Browse the boards</b><span>Tap the magnifier to see each full outfit board.</span></div></li>
     <li><i>2</i><div><b>Pick one theme</b><span>Tap a card to select it. Tap another to switch.</span></div></li>
-    <li><i>3</i><div><b>Submit your vote</b><span>Add your name, year and section. One vote per student.</span></div></li>
+    <li><i>3</i><div><b>Submit your vote</b><span>Add your name, then tap your year and section. One vote per student.</span></div></li>
   </ol>
 </section>
 
@@ -347,8 +356,10 @@ footer b{color:var(--paper);font-weight:600}
           </div>
         </div>
         <div class="field">
-          <label class="lbl" for="section">Section</label>
-          <input type="text" id="section" name="section" placeholder="e.g. BSCE 2-A" maxlength="30">
+          <span class="lbl" id="sec-lbl">Section</span>
+          <div class="secs" id="secs" role="radiogroup" aria-labelledby="sec-lbl">
+            <p class="sec-hint">Choose your year level first.</p>
+          </div>
         </div>
         <button class="submit" id="submit" type="submit">Submit my vote</button>
         <p class="msg" id="msg" role="status" aria-live="polite"></p>
@@ -471,18 +482,31 @@ try{
 }catch(_){}
 addEventListener("resize", syncBar);
 
+/* sections follow the chosen year: BSCE - 3A, 3B, 3C */
+function renderSections(){
+  const y = (document.querySelector('input[name=year]:checked') || {}).value;
+  const box = $("#secs");
+  if(!y){ box.innerHTML = '<p class="sec-hint">Choose your year level first.</p>'; return; }
+  const n = y.charAt(0);
+  box.innerHTML = ["A","B","C"].map(s => {
+    const v = `BSCE - ${n}${s}`;
+    return `<input type="radio" name="section" id="sec-${n}${s}" value="${v}"><label for="sec-${n}${s}">${v}</label>`;
+  }).join("");
+}
+document.querySelectorAll('input[name=year]').forEach(r => r.addEventListener("change", () => { renderSections(); say(""); }));
+
 function say(m){ $("#msg").textContent = m; }
 
 $("#form").addEventListener("submit", async e => {
   e.preventDefault();
   const name = $("#name").value.trim();
   const year = (document.querySelector('input[name=year]:checked') || {}).value;
-  const section = $("#section").value.trim();
+  const section = (document.querySelector('input[name=section]:checked') || {}).value;
   if(isClosed()){ say("Voting closed on Nov 8 at 11:59 PM. New votes are no longer accepted."); return; }
   if(!picked){ say("Choose a theme first."); document.getElementById("themes-h").scrollIntoView({behavior:"smooth"}); return; }
   if(!name){ say("Enter your full name."); $("#name").focus(); return; }
   if(!year){ say("Choose your year level."); return; }
-  if(!section){ say("Enter your section."); $("#section").focus(); return; }
+  if(!section){ say("Choose your section."); return; }
 
   const t = byId(picked);
   const payload = { name, year, section, theme:t.name, submittedAt:new Date().toISOString() };
@@ -522,7 +546,7 @@ $("#form").addEventListener("submit", async e => {
   $("#done-note").textContent = note;
   $("#done").hidden = false; $("#done-close").focus();
   btn.disabled = false; btn.textContent = "Submit my vote";
-  e.target.reset(); picked = null; update(); tick();
+  e.target.reset(); renderSections(); picked = null; update(); tick();
 });
 
 update();
