@@ -115,6 +115,13 @@ input[type=password]:focus{border-color:var(--stitch);box-shadow:0 0 0 3px rgba(
   background:rgba(242,195,91,.12);border:1px dashed var(--stitch);color:var(--stitch);font-size:13px;font-weight:500;text-align:center}
 .admin-bar button{background:none;border:0;color:var(--thread);text-decoration:underline;font:500 13px var(--body);cursor:pointer}
 
+.voted-pick{display:flex;align-items:center;gap:14px;max-width:360px;margin:6px auto 16px;padding:10px;border-radius:14px;background:rgba(8,24,47,.55);text-align:left}
+.voted-pick img{width:72px;height:72px;border-radius:10px;object-fit:cover;flex:none}
+.voted-pick small{display:block;font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--stitch)}
+.voted-pick strong{display:block;font:400 22px/1.1 var(--poster);text-transform:uppercase;letter-spacing:.02em}
+.voted-pick span{display:block;font-size:12.5px;color:var(--muted);margin-top:2px}
+.lock.ok{color:var(--ok)}
+
 /* section heads */
 .head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:8px 16px;margin-bottom:18px}
 .eyebrow{margin:0 0 4px;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--stitch)}
@@ -292,8 +299,9 @@ footer b{color:var(--paper);font-weight:600}
   <section class="wrap closed" id="closed" hidden>
     <div class="closed-card denim">
       <div class="lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg></div>
-      <h2>Voting is closed</h2>
-      <p>Thanks for voting, CE students! The ballot closed on Sunday, November 8 at 11:59 PM. ACES will announce the winning theme soon.</p>
+      <h2 id="closed-h">Voting is closed</h2>
+      <div class="voted-pick" id="voted-pick" hidden><img id="voted-img" alt=""><div><small>Your vote</small><strong id="voted-theme"></strong><span id="voted-who"></span></div></div>
+      <p id="closed-p">Thanks for voting, CE students! The ballot closed on Sunday, November 8 at 11:59 PM. ACES will announce the winning theme soon.</p>
       <details class="org-access" id="org-access">
         <summary>Organizer access</summary>
         <form class="org-form" id="org-form" novalidate>
@@ -455,7 +463,7 @@ const closeLb = () => { $("#lb").hidden = true; };
 $("#lb-close").onclick = closeLb;
 $("#lb").addEventListener("click", e => { if(e.target.id === "lb") closeLb(); });
 $("#lb-pick").onclick = () => { choose(lbTheme.id); closeLb(); };
-$("#done-close").onclick = () => { $("#done").hidden = true; };
+$("#done-close").onclick = () => { $("#done").hidden = true; tick(); scrollTo({top:0}); };
 document.addEventListener("keydown", e => { if(e.key === "Escape"){ closeLb(); $("#done").hidden = true; } });
 
 try{
@@ -482,14 +490,31 @@ $("#form").addEventListener("submit", async e => {
 
   let note = "Preview mode: this vote was not saved. Votes go to Google Sheets once the site is live.";
   if(SHEETS_URL){
+    const body = JSON.stringify(payload), headers = {"Content-Type":"text/plain;charset=utf-8"};
+    let res = null;
     try{
-      await fetch(SHEETS_URL, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(payload)});
-      note = "Your vote is saved. Thanks for voting!";
+      const r = await fetch(SHEETS_URL, {method:"POST", headers, body});
+      res = await r.json();
     }catch(_){
+      try{ await fetch(SHEETS_URL, {method:"POST", mode:"no-cors", headers, body}); res = {ok:true}; }
+      catch(_2){ res = null; }
+    }
+    if(!res){
       btn.disabled = false; btn.textContent = "Submit my vote";
       say("Couldn't send your vote. Check your connection and try again."); return;
     }
+    if(res.duplicate){
+      btn.disabled = false; btn.textContent = "Submit my vote";
+      store.set("ceDaysVote", JSON.stringify({ duplicate:true, name, year, section }));
+      tick(); scrollTo({top:0}); return;
+    }
+    if(!res.ok){
+      btn.disabled = false; btn.textContent = "Submit my vote";
+      say(res.error === "Voting is closed." ? "Voting has closed. New votes are no longer accepted." : "Your vote couldn't be saved. Please try again."); return;
+    }
+    note = "Your vote is saved. Thanks for voting!";
   } else { await new Promise(r => setTimeout(r, 450)); }
+  if(SHEETS_URL) store.set("ceDaysVote", JSON.stringify({ id:t.id, theme:t.name, name, year, section, at:Date.now() }));
 
   $("#done-img").src = `img/${t.id}-thumb.jpg`; $("#done-img").alt = t.name;
   $("#done-theme").textContent = t.name;
@@ -497,7 +522,7 @@ $("#form").addEventListener("submit", async e => {
   $("#done-note").textContent = note;
   $("#done").hidden = false; $("#done-close").focus();
   btn.disabled = false; btn.textContent = "Submit my vote";
-  e.target.reset(); picked = null; update();
+  e.target.reset(); picked = null; update(); tick();
 });
 
 update();
@@ -526,11 +551,32 @@ function tick(){
     $("#cd-m").textContent = pad(m); $("#cd-s").textContent = pad(s);
     cd.classList.toggle("urgent", DEADLINE - Date.now() < 3600e3);
   }
-  const showSite = !closed || organizer;
+  let vote = null; try{ vote = JSON.parse(store.get("ceDaysVote") || "null"); }catch(_){}
+  const voted = !!vote;
+  const showSite = organizer || (!closed && !voted);
   $("#open").hidden = !showSite;
-  $("#closed").hidden = showSite;
-  $("#steps").hidden = closed;
-  $("#admin-bar").hidden = !(closed && organizer);
+  if(!$("#done").hidden && !showSite) { $("#closed").hidden = true; } else { $("#closed").hidden = showSite; }
+  $("#steps").hidden = closed || (voted && !organizer);
+  $("#admin-bar").hidden = !(organizer && (closed || voted));
+  $("#admin-bar").firstChild.textContent = closed
+    ? "Organizer view · voting is closed for students, so new votes are not accepted. "
+    : "Organizer view · this device already voted, so it's unlocked only for you. ";
+  if(!showSite){
+    const showVote = voted && !vote.duplicate && vote.theme;
+    $("#closed-h").textContent = closed ? "Voting is closed" : "You already voted";
+    $("#closed .lock").classList.toggle("ok", voted && !closed);
+    $("#voted-pick").hidden = !showVote;
+    if(showVote){
+      $("#voted-img").src = `img/${vote.id}-thumb.jpg`; $("#voted-img").alt = vote.theme;
+      $("#voted-theme").textContent = vote.theme;
+      $("#voted-who").textContent = `${vote.name} · ${vote.year} · ${vote.section}`;
+    }
+    $("#closed-p").textContent = closed
+      ? "Thanks for voting, CE students! The ballot closed on Sunday, November 8 at 11:59 PM. ACES will announce the winning theme soon."
+      : vote.duplicate
+        ? `A vote for ${vote.name} (${vote.section}) is already recorded. Each student can vote only once. Results come out after voting closes on Sun, Nov 8 at 11:59 PM.`
+        : "Thanks! Your vote is recorded and each student can vote only once. Results come out after voting closes on Sun, Nov 8 at 11:59 PM.";
+  }
   const btn = $("#submit");
   if(closed){ btn.disabled = true; btn.textContent = "Voting closed"; }
   if(!showSite){ $("#bar").classList.remove("show"); }
