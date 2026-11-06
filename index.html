@@ -601,7 +601,7 @@ function tick(){
     $("#closed-p").textContent = closed
       ? "Thanks for voting, CE students! The ballot closed on Sunday, November 8 at 11:59 PM. ACES will announce the winning theme soon."
       : vote.duplicate
-        ? `A vote for ${vote.name} (${vote.section}) is already recorded. Each student can vote only once. Results come out after voting closes on Sun, Nov 8 at 11:59 PM.`
+        ? `A vote under the name ${vote.name} is already recorded. Each student can vote only once, so a different year or section doesn't allow a second vote. Results come out after voting closes on Sun, Nov 8 at 11:59 PM.`
         : "Thanks! Your vote is recorded and each student can vote only once. Results come out after voting closes on Sun, Nov 8 at 11:59 PM.";
   }
   const btn = $("#submit");

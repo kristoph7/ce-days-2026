@@ -24,7 +24,7 @@ function doPost(e) {
   // the website asks "is this student still on the Votes list?" so a deleted row unlocks them
   try {
     const q = JSON.parse(e.postData.contents);
-    if (q.action === 'check') return json_({ ok: true, voted: hasVoted_(q.name, q.section) });
+    if (q.action === 'check') return json_({ ok: true, voted: hasVoted_(q.name) });
   } catch (_) {}
   if (new Date() > DEADLINE) return json_({ ok: false, error: 'Voting is closed.' });
   const lock = LockService.getScriptLock();
@@ -34,8 +34,9 @@ function doPost(e) {
     const theme = String(d.theme || '');
     if (THEMES.indexOf(theme) === -1) return json_({ ok: false, error: 'Unknown theme.' });
     const sheet = votesSheet_();
-    // one vote per student: same name + section (ignoring case, spaces and dashes) is rejected
-    if (hasVoted_(d.name, d.section)) {
+    // one vote per student: the same full name (ignoring case, spaces, dots and dashes) is rejected,
+    // even with a different year or section
+    if (hasVoted_(d.name)) {
       return json_({ ok: false, duplicate: true, error: 'Already voted.' });
     }
     sheet.appendRow([
@@ -167,16 +168,17 @@ function votesSheet_() {
 function clean_(v, max) {
   return String(v || '').replace(/^[=+\-@]/, "'$&").slice(0, max); // stops formula injection
 }
-function hasVoted_(name, section) {
+function hasVoted_(name) {
   const sheet = votesSheet_();
   const last = sheet.getLastRow();
   if (last < 2) return false;
-  const key = norm_(name) + '|' + norm_(section);
-  const rows = sheet.getRange(2, 2, last - 1, 3).getValues(); // Name, Year, Section
-  return rows.some(r => norm_(r[0]) + '|' + norm_(r[2]) === key);
+  const key = norm_(name);
+  if (!key) return false;
+  const names = sheet.getRange(2, 2, last - 1, 1).getValues(); // Name column
+  return names.some(r => norm_(r[0]) === key);
 }
 function norm_(v) {
-  return String(v || '').replace(/^'/, '').toLowerCase().replace(/[\s\-_.]+/g, '');
+  return String(v || '').replace(/^'/, '').toLowerCase().replace(/[\s\-_.,]+/g, '');
 }
 function json_(o) {
   return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);
